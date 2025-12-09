@@ -1,0 +1,80 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+._*
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Fortran compiled files (keep original Fortran source)
+*.o
+*.mod
+s_area_c
+s_bend_s
+s_count_s
+s_dens_c
+s_densph_s
+s_filter
+s_gauss_c
+s_grid_c
+s_gridsph_s
+s_index
+s_inertia_s
+s_order_c
+s_shell_s
+s_spher_s
+s_stat
+s_thick_c
+s_topog_c
+
+# Temporary files
+*.tmp
+*.bak
+*_p.*
