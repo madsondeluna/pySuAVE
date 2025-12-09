@@ -16,6 +16,15 @@ from pysuave.analysis.topography import (
     calculate_topography,
     calculate_moment_of_inertia,
 )
+from pysuave.analysis.statistics import (
+    StatisticalSummary,
+    calculate_basic_statistics,
+    create_histogram,
+    gaussian_model,
+    calculate_percentiles,
+    calculate_autocorrelation,
+    comprehensive_statistics,
+)
 
 __all__ = [
     "calculate_density_profile_spherical",
@@ -26,4 +35,11 @@ __all__ = [
     "calculate_thickness_spherical",
     "calculate_topography",
     "calculate_moment_of_inertia",
+    "StatisticalSummary",
+    "calculate_basic_statistics",
+    "create_histogram",
+    "gaussian_model",
+    "calculate_percentiles",
+    "calculate_autocorrelation",
+    "comprehensive_statistics",
 ]
