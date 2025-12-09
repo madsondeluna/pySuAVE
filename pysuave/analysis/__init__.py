@@ -12,6 +12,10 @@ from pysuave.analysis.thickness import (
     calculate_thickness_cartesian,
     calculate_thickness_spherical,
 )
+from pysuave.analysis.topography import (
+    calculate_topography,
+    calculate_moment_of_inertia,
+)
 
 __all__ = [
     "calculate_density_profile_spherical",
@@ -20,4 +24,6 @@ __all__ = [
     "calculate_order_parameter_spherical",
     "calculate_thickness_cartesian",
     "calculate_thickness_spherical",
+    "calculate_topography",
+    "calculate_moment_of_inertia",
 ]
