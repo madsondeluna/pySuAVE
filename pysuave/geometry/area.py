@@ -13,6 +13,7 @@ import numpy.typing as npt
 from typing import Tuple
 
 from pysuave.core.types import Coordinate3D
+from pysuave.utils.geometry_utils import calculate_solid_angle
 
 
 def calculate_triangle_area_heron(
@@ -279,19 +280,20 @@ def calculate_surface_area_and_volume_spherical(
             
             # Calculate solid angle for first triangle
             # Center point for solid angle calculation
+            # Fortran: (i-1-0.5)*dph, (j-1-0.5)*dth
             phi_center = (i - 1 - 0.5) * dphi
             theta_center = (j - 1 - 0.5) * dtheta
             
-            # Solid angle calculation (simplified - full implementation needs ang function)
-            # For now, approximate using grid spacing
-            # TODO: Implement proper solid angle calculation (ang function)
-            solid_angle1 = np.sin(phi_center) * dphi * dtheta
+            # Calculate solid angle using ang function
+            # Fortran: c_angle = ang(grid3(i-1,j-1), grid3(i-1,j), grid3(i,j-1), (i-1-0.5)*dph, (j-1-0.5)*dth)
+            solid_angle1 = calculate_solid_angle(p1, p2, p3, phi_center, theta_center)
             
             # Get radius at this point
             rho1 = grid_spherical[i-1, j-1, 0]  # rho coordinate
             
             # Volume contribution from first triangle
             # Formula: V = (solid_angle * area * radius) / 3
+            # Fortran: s_vol = s_vol + c_angle*aux2*grid(i-1,j-1)%rho/3
             volume1 = solid_angle1 * area1 * rho1 / 3.0
             total_volume += volume1
             
@@ -306,12 +308,14 @@ def calculate_surface_area_and_volume_spherical(
             total_area += area2
             
             # Solid angle for second triangle
-            solid_angle2 = np.sin(phi_center) * dphi * dtheta
+            # Fortran: c_angle = ang(grid3(i-1,j), grid3(i,j-1), grid3(i,j), (i-1-0.5)*dph, (j-1-0.5)*dth)
+            solid_angle2 = calculate_solid_angle(p2, p3, p4, phi_center, theta_center)
             
             # Get radius at second triangle vertex
             rho2 = grid_spherical[i, j, 0]
             
             # Volume contribution from second triangle
+            # Fortran: s_vol = s_vol + c_angle*aux2*grid(i,j)%rho/3
             volume2 = solid_angle2 * area2 * rho2 / 3.0
             total_volume += volume2
     
