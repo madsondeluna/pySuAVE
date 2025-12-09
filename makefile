@@ -5,39 +5,33 @@
 #
 
 #only change this information if you know what you are doing! =============================
-FCFLAGS = -fopenmp
-LIBXDR= -I /usr/local/include/ -lgmxfort
+FCFLAGS = -O2
 
 #inserting the source codes and libraries
-SRC_ALL = $(wildcard s_*.f90)
+SRC_ALL = $(wildcard *.f90)
+SRC = $(filter-out s_inertia.f90 s_index.f90 ,$(SRC_ALL))
 OBJ_ALL = $(patsubst %.f90,%,$(SRC_ALL))
-SRC_CART = $(wildcard s_*_c.f90)
-OBJ_CART = $(patsubst %.f90,%,$(SRC_CART))
-SRC_SPH = $(wildcard s_*_s.f90)
-OBJ_SPH = $(patsubst %.f90,%,$(SRC_SPH))
-INSTALL_PATH = /usr/local/suave
+OBJ = $(patsubst %.f90,%,$(SRC))
+LIB = diag.f
+INSTALL_PATH = /usr/local/suave 
 
 all: $(OBJ_ALL)
 
-$(OBJ_CART): % : %.f90
-	gfortran -DCART $(FCFLAGS) types.f90 variables.F90 funcproc.f90 write_help.f90 startup.f90 $^ $(LIBXDR) -o $@
-
-$(OBJ_SPH): % : %.f90
-	gfortran -DSPHE $(FCFLAGS) types.f90 variables.F90 diag.f funcproc.f90 write_help.f90 startup.f90 $^ $(LIBXDR) -o $@
+$(OBJ): % : %.f90
+	gfortran $(FCFLAGS) $^ -o $@
 
 s_index: s_index.f90
-	gfortran -DINDEX types.f90 variables.F90 funcproc.f90 write_help.f90 startup.f90 $^ -o $@
+	gfortran $^ -o $@
 
-s_stat: s_stat.f90
-	gfortran -DSTAT -O2 types.f90 variables.F90 funcproc.f90 write_help.f90 startup.f90 $^ -o $@
-
-s_filter: s_filter.f90
-	gfortran -O2 types.f90 variables.F90 funcproc.f90 write_help.f90 startup.f90 $^ -o $@
+s_inertia: s_inertia.f90 $(LIB)
+	gfortran $(FCFLAGS) $^ -o $@
 
 clean:
 	@rm -f *.mod 
 
 install:
+	@mkdir $(INSTALL_PATH)
 	@mv $(OBJ_ALL)  $(INSTALL_PATH)
 	@echo "SuAVE Installed !"
 	@echo "Enjoy it !"
+
