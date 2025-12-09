@@ -54,7 +54,7 @@ Documentation = "https://pysuave.readthedocs.io"
 "Bug Tracker" = "https://github.com/SuAVE-Software/pySuAVE/issues"
 
 [project.scripts]
-pysuave = "pysuave.cli.commands:main"
+pysuave = "pysuave.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
