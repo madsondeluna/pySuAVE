@@ -35,41 +35,41 @@ description: Plano de migração do SuAVE de Fortran para Python
 1. **Criar estrutura de diretórios**
    ```
    pySuAVE/
-   ├── pysuave/              # Pacote principal
-   │   ├── __init__.py
-   │   ├── core/             # Módulos centrais
-   │   │   ├── __init__.py
-   │   │   ├── types.py      # Dataclasses (equivalente a types.f90)
-   │   │   ├── constants.py  # Constantes
-   │   │   └── config.py     # Configurações
-   │   ├── geometry/         # Funções geométricas
-   │   │   ├── __init__.py
-   │   │   ├── cartesian.py  # Geometria cartesiana
-   │   │   └── spherical.py  # Geometria esférica
-   │   ├── io/               # Entrada/Saída
-   │   │   ├── __init__.py
-   │   │   ├── pdb.py        # Leitura PDB
-   │   │   ├── ndx.py        # Leitura NDX
-   │   │   └── trajectory.py # Leitura trajetórias
-   │   ├── analysis/         # Ferramentas de análise
-   │   │   ├── __init__.py
-   │   │   ├── area.py
-   │   │   ├── density.py
-   │   │   ├── curvature.py
-   │   │   └── statistics.py
-   │   ├── cli/              # Interface de linha de comando
-   │   │   ├── __init__.py
-   │   │   └── commands.py
-   │   └── utils/            # Utilitários
-   │       ├── __init__.py
-   │       ├── grid.py
-   │       └── helpers.py
-   ├── tests/                # Testes unitários
-   ├── examples/             # Exemplos (migrar do original)
-   ├── docs/                 # Documentação
-   ├── setup.py
-   ├── pyproject.toml
-   └── README.md
+    pysuave/              # Pacote principal
+       __init__.py
+       core/             # Módulos centrais
+          __init__.py
+          types.py      # Dataclasses (equivalente a types.f90)
+          constants.py  # Constantes
+          config.py     # Configurações
+       geometry/         # Funções geométricas
+          __init__.py
+          cartesian.py  # Geometria cartesiana
+          spherical.py  # Geometria esférica
+       io/               # Entrada/Saída
+          __init__.py
+          pdb.py        # Leitura PDB
+          ndx.py        # Leitura NDX
+          trajectory.py # Leitura trajetórias
+       analysis/         # Ferramentas de análise
+          __init__.py
+          area.py
+          density.py
+          curvature.py
+          statistics.py
+       cli/              # Interface de linha de comando
+          __init__.py
+          commands.py
+       utils/            # Utilitários
+           __init__.py
+           grid.py
+           helpers.py
+    tests/                # Testes unitários
+    examples/             # Exemplos (migrar do original)
+    docs/                 # Documentação
+    setup.py
+    pyproject.toml
+    README.md
    ```
 
 2. **Definir dependências Python**
@@ -178,7 +178,7 @@ description: Plano de migração do SuAVE de Fortran para Python
 3. **Docker image** (opcional)
 4. **CI/CD** (GitHub Actions)
 
-## 🛠️ Ferramentas e Tecnologias
+##  Ferramentas e Tecnologias
 
 ### Stack Python Recomendado
 - **Python**: 3.9+ (para type hints modernos)

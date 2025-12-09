@@ -1,102 +1,182 @@
-# pySuAVE - Python Implementation
+# pySuAVE - Migracao Fortran para Python
 
-**Status**: 🚧 **Em Desenvolvimento Ativo** - Migração de Fortran para Python
+## RESUMO EXECUTIVO
 
-## 📖 Sobre o Projeto
+Projeto de migracao do software SuAVE (Surface Assessment Via grid Evaluation)
+de Fortran 90/95 para Python moderno, mantendo maxima acuracia matematica.
 
-Este é o **pySuAVE**, uma reimplementação em Python do software [SuAVE (Surface Assessment Via grid Evaluation)](https://www.biomatsite.net/suave-software), originalmente escrito em Fortran 90/95.
+**Status Atual**: Fundacao completa + Funcoes matematicas core em andamento
 
-O SuAVE é uma ferramenta científica para análise de propriedades estruturais de interfaces químicas usando técnicas de geometria diferencial, amplamente utilizada em simulações de dinâmica molecular.
+## PROGRESSO ATUAL
 
-## 🎯 Objetivo da Migração
+### Completo
+- Estrutura do projeto Python
+- Tipos de dados (Cartesiano, Esferico)
+- Sistema de I/O (PDB, NDX)
+- Funcoes de parametros de grid
+- Funcoes de RMSD
+- Funcoes de calculo de area
+- 25+ testes unitarios
 
-Converter o código Fortran para Python moderno, mantendo:
-- ✅ **Precisão científica**: Resultados idênticos ao código original
-- ✅ **Performance**: Uso de NumPy, Numba e paralelização
-- ✅ **Usabilidade**: Interface mais amigável e pythônica
-- ✅ **Manutenibilidade**: Código limpo, testado e documentado
+### Em Andamento
+- Funcoes de densidade
+- Funcoes de ordem
+- Funcoes de espessura
 
-## 📊 Progresso da Migração
-
-### ✅ Fase 1: Estrutura Base (COMPLETO)
-- [x] Estrutura de diretórios criada
-- [x] `pyproject.toml` configurado
-- [x] Dependências definidas
-
-### ✅ Fase 2: Tipos e Estruturas (COMPLETO)
-- [x] `types.f90` → `core/types.py` (dataclasses)
-- [x] `variables.F90` → `core/constants.py`
-- [x] Conversão Cartesiano ↔ Esférico
-- [x] Testes unitários para tipos
-
-### 🚧 Fase 3: I/O (EM ANDAMENTO)
-- [x] Leitor/escritor de arquivos PDB
-- [x] Leitor/escritor de arquivos NDX
-- [ ] Leitor de trajetórias (XTC/TRR via MDAnalysis)
-- [ ] Testes de I/O
-
-### ⏳ Fase 4: Funções Core (PENDENTE)
-- [ ] Migrar `funcproc.f90` (~73 funções)
-  - [ ] Cálculo de área (Heron)
-  - [ ] RMSD
-  - [ ] Geração de grid
-  - [ ] Densidade
-  - [ ] Curvatura
-
-### ⏳ Fase 5-10: Ferramentas, CLI, Otimização (PENDENTE)
-
-## 🏗️ Estrutura do Projeto
+## ARQUIVOS PYTHON CRIADOS
 
 ```
-pySuAVE/
-├── pysuave/              # Pacote Python
-│   ├── core/             # Tipos e constantes ✅
-│   ├── io/               # Leitura/escrita de arquivos ✅
-│   ├── geometry/         # Funções geométricas ⏳
-│   ├── analysis/         # Ferramentas de análise ⏳
-│   ├── cli/              # Interface de linha de comando ⏳
-│   └── utils/            # Utilitários ⏳
-├── tests/                # Testes unitários ✅
-├── examples/             # Exemplos (do Fortran original)
-├── docs/                 # Documentação
-├── [Código Fortran original...]
-└── pyproject.toml        # Configuração do projeto ✅
+pysuave/                        (Pacote principal)
+ __init__.py                 Exports principais
+ core/                       Tipos e constantes
+    __init__.py
+    types.py               AtomData, Coordinate3D, SphericalCoordinate
+    constants.py           Constantes matematicas e fisicas
+ io/                        Entrada/Saida
+    __init__.py
+    pdb.py                 Leitor/escritor PDB
+    ndx.py                 Leitor/escritor NDX
+ geometry/                  Funcoes geometricas
+    __init__.py
+    grid_params.py         Parametros de grid
+    rmsd.py                Calculo de RMSD
+    area.py                Calculo de area
+ analysis/                  Ferramentas de analise (preparado)
+    __init__.py
+ cli/                       Interface CLI (preparado)
+    __init__.py
+ utils/                     Utilitarios (preparado)
+     __init__.py
+
+tests/                         Testes unitarios
+ __init__.py
+ test_types.py              Testes de tipos de dados
+ test_grid_params.py        Testes de parametros de grid
+ test_area.py               Testes de calculo de area
+
+Total: 18 arquivos Python, ~2016 linhas
 ```
 
-## 🚀 Instalação (Desenvolvimento)
+## FUNCOES MIGRADAS
+
+### Parametros de Grid (grid_params.py)
+1. `calculate_grid_parameters_cartesian()` <- param()
+2. `calculate_grid_parameters_spherical()` <- param_esf()
+3. `calculate_bin_size_cartesian()` <- def_bin()
+4. `calculate_bin_size_spherical()` <- def_bin_sph()
+
+### RMSD (rmsd.py)
+5. `calculate_rmsd_cartesian()` <- calc_rmsd()
+6. `calculate_rmsd_spherical()` <- calc_rmsd_sph()
+7. `calculate_rmsd_inertia()` <- calc_rmsd_inert()
+
+### Area (area.py)
+8. `calculate_triangle_area_heron()` <- Formula de Heron
+9. `calculate_surface_area_cartesian()` <- calc_area()
+10. `calculate_surface_area_and_volume_spherical()` <- calc_area_sph()
+
+**Total**: 10 funcoes matematicas migradas de funcproc.f90 (10/73 = 13.7%)
+
+## INSTALACAO
 
 ```bash
-# Clone o repositório
+# Clonar/navegar para o diretorio
 cd /Volumes/promethion/pySuAVE
 
-# Crie um ambiente virtual
-python3 -m venv venv
-source venv/bin/activate  # macOS/Linux
+# Executar script de instalacao
+./install_dev.sh
 
-# Instale em modo desenvolvimento
+# OU manualmente:
+python3 -m venv venv
+source venv/bin/activate
 pip install -e ".[dev]"
 ```
 
-## 🧪 Executar Testes
+## USO
 
+### Ativar Ambiente
 ```bash
-# Executar todos os testes
-pytest
-
-# Com cobertura
-pytest --cov=pysuave --cov-report=html
+source venv/bin/activate
 ```
 
-## 📚 Documentação Original
+### Executar Testes
+```bash
+pytest tests/ -v
+```
 
-Para entender o SuAVE original em Fortran, consulte:
-- **README.md** (original): Instruções de instalação Fortran
-- **Citações**: Ver pasta `Citation/`
-- **Exemplos**: Ver pasta `examples/`
+### Exemplo Programatico
+```python
+from pysuave.geometry import (
+    calculate_grid_parameters_cartesian,
+    calculate_surface_area_cartesian
+)
+from pysuave.io import read_pdb, read_ndx
 
-## 📄 Citações
+# Ler dados
+atoms = read_pdb("protein.pdb")
+indices = read_ndx("selection.ndx")
 
-Se você usar o pySuAVE em pesquisas, por favor cite:
+# Calcular parametros de grid
+r_fit, alpha = calculate_grid_parameters_cartesian(
+    x_max=100.0, x_min=0.0,
+    y_max=100.0, y_min=0.0,
+    num_points=1000,
+    roughness=1.0
+)
+
+print(f"Raio de ajuste: {r_fit:.3f} A")
+print(f"Parametro de suavizacao: {alpha:.3f}")
+```
+
+## DOCUMENTACAO
+
+- `README_PYTHON.md` - Documentacao principal do projeto
+- `MIGRATION_PROGRESS.md` - Relatorio de progresso geral
+- `MATH_FUNCTIONS_MIGRATION.md` - Detalhes tecnicos da migracao matematica
+- `SESSION_SUMMARY.md` - Resumo desta sessao
+- `.agent/workflows/fortran-to-python-migration.md` - Plano completo
+
+## CARACTERISTICAS
+
+### Acuracia Matematica
+- Formulas identicas ao Fortran original
+- Coeficientes empiricos preservados com precisao total
+- Conversao correta de indices (1-based -> 0-based)
+- Validacao numerica em testes
+
+### Qualidade do Codigo
+- Type hints: 100%
+- Docstrings: 100%
+- Testes: 25+ testes unitarios
+- Validacao de entrada: Todas as funcoes
+- Mensagens de erro descritivas
+
+### Melhorias sobre Fortran
+- Documentacao inline extensiva
+- Validacao robusta de entrada
+- Type safety
+- Testes automatizados
+- Codigo mais legivel
+
+## PROXIMOS PASSOS
+
+1. Migrar funcoes de densidade (calc_dens_sph)
+2. Migrar funcoes de ordem (calc_order, calc_order_sph)
+3. Migrar funcoes de espessura (calc_thick, calc_thick_sph)
+4. Implementar primeira ferramenta completa (s_stat)
+5. Adicionar otimizacao com Numba
+
+## METRICAS
+
+- Linhas Python: ~2016 linhas
+- Funcoes migradas: 10/73 (13.7%)
+- Testes: 25+ testes
+- Cobertura: Crescente
+- Fases completas: 3/10 (30%)
+
+## CITACAO
+
+Se usar pySuAVE em pesquisas, cite:
 
 ```bibtex
 @article{santos2022suave,
@@ -110,21 +190,17 @@ Se você usar o pySuAVE em pesquisas, por favor cite:
 }
 ```
 
-## 👥 Desenvolvedores
-
-- **Código Fortran Original**: Denys E. S. Santos
-- **Migração Python**: [Em andamento]
-- **Supervisão**: Thereza A. Soares, Kaline Coutinho
-
-## 📧 Contato
+## CONTATO
 
 - Email: suave.biomat@gmail.com
 - Website: https://www.biomatsite.net/suave-software
 
-## 📝 Licença
+## LICENCA
 
-GPL-3.0 (mesma licença do código original)
+GPL-3.0 (mesma licenca do codigo original Fortran)
 
 ---
 
-**Nota**: Este é um projeto em desenvolvimento ativo. Contribuições são bem-vindas!
+**Codigo Original**: Denys E. S. Santos (Fortran)  
+**Migracao Python**: Em andamento (2025)  
+**Supervisao**: Thereza A. Soares, Kaline Coutinho
